@@ -18,17 +18,16 @@ export default function Profile(){
 
 
     // uma função que irá ser exeutada. Caso haja parametro dentro do array, indica que sempre que ele mudar a função vai ser executada.
-    useEffect(() => {atualizaProfile()}, [ongId]);
-
-    async function atualizaProfile(){
-        await api.get('/profile', {
-            headers:{
+    useEffect(() => {
+        api.get('/profile', {
+             headers:{
                 Authorization: ongId,
             }
         }).then( response => {
             setIncidents(response.data);
         });
-    }
+    }, [ongId]);
+
 
     async function handleDeleteIncident(id){
         try
@@ -39,9 +38,8 @@ export default function Profile(){
                 }
             });
 
-            // removendo o incidente deletado da lista de incidentes
-            //setIncidents(incidents.filter(incident => incident.id !== id));
-            atualizaProfile();
+            const incidentesNovos = incidents.filter(incident => incident.id !== id);
+            setIncidents({incidentesNovos});
 
         }
         catch(err)
